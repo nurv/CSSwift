@@ -8,5 +8,10 @@
 
 import Foundation
 
-println("Hello, World!")
+// var test = [15, 9, 8, 1, 4 ,11 , 7, 12, 13, 6, 5, 3, 16, 2, 10, 14]
+// insertSort(&test, { $0 > $1 })
+// println(test)
 
+var test = [15, 9, 8, 1, 4 ,11 , 7, 12, 13, 6, 5, 3, 16, 2, 10, 14]
+quickSort(&test, { $0 <= $1 })
+println(test)
