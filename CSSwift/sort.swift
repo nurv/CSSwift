@@ -10,7 +10,7 @@ import Foundation
 
 
 // Insertion Sort
-
+// Best: O(n), Avg: O(n^2), Worst: O(n^2)
 func insertSort<T: Comparable> (inout array:[T]){
     for i in 1...array.count-1{
         println(array)
@@ -30,7 +30,7 @@ func insertInsert<T: Comparable> (inout array:[T], pos:Int, value:T){
 }
 
 // QuickSort
-
+// Best: O(n log n), Avg: O(n log n), Worst: O(n^2)
 func quickSort<T: Comparable> (inout array:[T]){
     qsort2(&array, 0, array.count - 1)
 }

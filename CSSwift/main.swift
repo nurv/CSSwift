@@ -12,6 +12,12 @@ import Foundation
 // insertSort(&test, { $0 > $1 })
 // println(test)
 
-var test = [15, 9, 8, 1, 4 ,11 , 7, 12, 13, 6, 5, 3, 16, 2, 10, 14]
-quickSort(&test)
-println(test)
+//var test = [15, 9, 8, 1, 4 ,11 , 7, 12, 13, 6, 5, 3, 16, 2, 10, 14]
+//quickSort(&test)
+//println(test)
+
+var d = [1, 16, 4, 10, 14, 7, 9, 3, 2, 8, 1]
+var h = BinaryHeap(heap:d)
+h.heapify(0)
+println(h)
+
