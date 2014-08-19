@@ -9,7 +9,7 @@
 import Foundation
 
 // Binary Heap
-// Insert: O(log n), Delete: O(log n), 
+// Insert: O(log n), Delete: O(log n),
 class BinaryHeap<T: Comparable> : Printable{
     var heap = [T]();
     
