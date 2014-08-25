@@ -28,6 +28,20 @@ import Foundation
 //countingSort(&test, 4)
 //println(test)
 
-var test = [7,5,13,2,14,1,6]
-bucketSort(&test, { Int(floor(Double($0) / Double(3))) })
-println(test)
+//var test = [7,5,13,2,14,1,6]
+//bucketSort(&test, { Int(floor(Double($0) / Double(3))) })
+//println(test)
+
+//var test = [15, 9, 8, 1, 4 ,11 , 7, 12, 13, 6, 5, 3, 16, 2, 10, 14]
+//println(sequentialSearch(test, 2))
+
+//var test = [15, 9, 8, 1, 4 ,11 , 7, 12, 13, 6, 5, 3, 16, 2, 10, 14]
+//quickSort(&test)
+//println(binarySearch(test, 2))
+
+
+var l = LinkedList<Int>()
+l.add(0,object: 1)
+println(l)
+
+

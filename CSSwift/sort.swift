@@ -107,7 +107,6 @@ func heapify<T: Comparable>(inout array:[T],idx:Int, max:Int){
 
 // Counting Sort
 // Best: O(n), Avg: O(n), Worst O(n)
-
 func countingSort (inout array:[Int], max:Int){
     var buckets = [Int](count:max, repeatedValue:0)
 
@@ -126,7 +125,6 @@ func countingSort (inout array:[Int], max:Int){
 
 // Bucket Sort
 // Best: O(n), Avg: O(n), Worst: O(n)
-
 func bucketSort<T: Comparable> (inout array:[T], hashfunc:(T) -> Int){
     var buckets = [[T]](count:array.count, repeatedValue:[])
     
