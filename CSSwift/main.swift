@@ -44,4 +44,3 @@ var l = LinkedList<Int>()
 l.add(0,object: 1)
 println(l)
 
-
