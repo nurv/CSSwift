@@ -41,6 +41,12 @@ import Foundation
 
 
 var l = LinkedList<Int>()
+println(l)
 l.add(0,object: 1)
 println(l)
-
+l.add(0,object: 2)
+println(l)
+l.add(2,object: 3)
+println(l)
+l.remove(1)
+println(l)

@@ -7,6 +7,10 @@
 //
 
 import Foundation
+// LinkedList
+// Delete/Insert: Best: O(1)
+//                Worst: O(n)
+
 
 // SwiftC has a problem that goes SegFault on Recursive data structures.
 // I'm gonna use a lisp approach to implment a LinkedList
@@ -16,31 +20,83 @@ class Cons{
     var cdr:Any? = nil;
 }
 
-
-
-class LinkedList<T: Any> : Cons, Printable{
-         func add (index: Int, object: T){
-            if index == 0 {
-                var n = LinkedList()
-                n.car = self.car
-                n.cdr = self.cdr
-                self.car = object
-                self.cdr = n
-            } else if index == 1 {
-                var n = LinkedList()
-                n.car = object
-                n.cdr = nil
-                self.cdr = n
-            }else{
-                if cdr is LinkedList{
-                    if let rest = cdr as? LinkedList{
-                        rest.add(index-1, object: object)
-                    }
-                }else{
-                    assert(false, "LinkedList rest is foreign")
+class LinkedListNode<T: Any> : Cons, Printable{
+    func add (index: Int, object: T){
+        if index == 1 {
+            var n = LinkedListNode()
+            n.car = object
+            n.cdr = self.cdr
+            self.cdr = n
+        }else{
+            if cdr is LinkedListNode{
+                if let rest = cdr as? LinkedListNode{
+                    rest.add(index-1, object: object)
                 }
+            }else if cdr == nil{
+                assert(false, "Access out of bound")
+            }else{
+                assert(false, "LinkedList rest is foreign")
             }
         }
+    }
+    
+    func remove (index: Int){
+        if index == 1 {
+            if let z = cdr{
+                if let rest = z as? LinkedListNode{
+                    self.cdr = rest.cdr
+                }
+            }
+        }else{
+            if cdr is LinkedListNode{
+                if let rest = cdr as? LinkedListNode{
+                    rest.remove(index-1)
+                }
+            }else if cdr == nil{
+                assert(false, "Access out of bound")
+            }else{
+                assert(false, "LinkedList rest is foreign")
+            }
+        }
+    }
+    
+    func get(index: Int) -> Any? {
+        if index == 0 {
+            return car
+        }else if index > 0 && cdr == nil{
+            assert(false, "Index out of range")
+        }else{
+            if cdr is LinkedListNode{
+                if let rest = cdr as? LinkedListNode{
+                    return rest.get(index-1)
+                }
+            }else if cdr == nil{
+                assert(false, "Access out of bound")
+            }else{
+                assert(false, "LinkedList rest is foreign")
+            }
+        }
+        return nil
+    }
+    
+    func set(index: Int, object:T) {
+        if index == 0 {
+            car = object
+        }else if index > 0 && cdr == nil{
+            assert(false, "Index out of range")
+        }else{
+            if cdr is LinkedListNode{
+                if let rest = cdr as? LinkedListNode{
+                    rest.set(index-1, object: object)
+                }
+            }else if cdr == nil{
+                assert(false, "Access out of bound")
+            }else{
+                assert(false, "LinkedList rest is foreign")
+            }
+        }
+        
+    }
     
     private func getValues() -> String{
         
@@ -53,7 +109,7 @@ class LinkedList<T: Any> : Cons, Printable{
         }else{
             var result = "\(car!)"
             if let x = cdr{
-                if let rest = x as? LinkedList {
+                if let rest = x as? LinkedListNode {
                     result += " " + rest.getValues()
                 }else{
                     result += " . \(cdr!)"
@@ -72,6 +128,79 @@ class LinkedList<T: Any> : Cons, Printable{
     }
 }
 
+struct LinkedList<T:Any> : Printable{
+    var list:LinkedListNode<T>? = nil
+    
+    mutating func add(index: Int, object: T){
+        if index == 0{
+            var l = LinkedListNode<T>()
+            l.car = object
+            l.cdr = self.list
+            self.list = l
+        }else{
+            self.list?.add(index, object: object)
+        }
+    }
+    
+    mutating func remove(index: Int){
+        if index == 0{
+            if let z = self.list{
+                if let obj = z.cdr{
+                    if let obj = z.cdr as? LinkedListNode<T>{
+                        self.list = obj
+                    }
+                }else{
+                    self.list = nil
+                }
+            }
+        }else{
+            if let z = list{
+                z.remove(index)
+            }
+        }
+    }
+    
+    
+    var description: String{
+        if let z = list{
+            return z.description
+        }else{
+            return "()"
+            }
+    }
+    
+    func toString() -> String{
+        if let z = list{
+            return z.description
+        }else{
+            return "()"
+        }
+        
+    }
+    
+    func get(index: Int) -> Any?{
+        if let l = self.list{
+            return l.get(index)
+        }else{
+            return nil
+        }
+    }
+    
+    func set(index: Int, object: T){
+        if let l = self.list{
+            l.set(index, object:object)
+        }
+    }
+}
+
+struct HashTable<T:Any>{
+    var array:[LinkedList<T>?]?
+
+    init(hashSize:Int, hash: (T) -> Int){
+        array = [LinkedList<T>?](count: hashSize, repeatedValue: nil)
+    }
+}
+
 
 //// Binary Heap
 //// Insert: O(log n), Delete: O(log n),
@@ -84,7 +213,7 @@ class BinaryHeap<T: Comparable> : Printable{
     init(heap:[T]){
         self.heap = [T](heap)
     }
-
+    
     func parent(node:Int) -> Int{
         return Int(node/2)
     }
@@ -137,68 +266,4 @@ class BinaryHeap<T: Comparable> : Printable{
     }
 }
 
-//// Linked List
-//struct LinkedList<T> : Printable{
-//    var car : T?
-//    var cdr : LinkedList?
-//    
-//    init(){
-//        self.car = nil
-//        self.cdr = nil
-//    }
-//    
-//    mutating func add (index: Int, object: T){
-//        if index == 0 {
-//            var n = LinkedList()
-//            n.car = self.car
-//            n.cdr = self.cdr
-//            self.car = object
-//            self.cdr = n
-//        } else if index == 1 {
-//            var n = LinkedList()
-//            n.car = object
-//            n.cdr = nil
-//            self.cdr = n
-//        }else{
-//            cdr?.add(index-1, object: object)
-//        }
-//    }
-//
-//    subscript(index: Int) -> T? {
-//        get {
-//            if index == 0 {
-//                return car
-//            }else if index > 0 && cdr == nil{
-//                assert(false, "Index out of range")
-//            }else{
-//                return cdr![index - 1]
-//            }
-//        }
-//        set(newValue) {
-//            if index == 0 {
-//                car = newValue
-//            }else if index > 0 && cdr == nil{
-//                assert(false, "Index out of range")
-//            }else{
-//                cdr![index - 1] = newValue
-//            }
-//        }
-//    }
-//    
-//    private func getValues() -> String{
-//        var result = "\(car)"
-//        if cdr != nil{
-//            result += ", " + cdr!.getValues()
-//        }
-//        return result
-//    }
-//    
-//    var description: String{
-//        return "LinkedList:[" + getValues() + "]"
-//    }
-//    
-//    func toString() -> String{
-//        return "LinkedList:[" + getValues() + "]"
-//    }
-//}
 
