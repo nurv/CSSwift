@@ -194,10 +194,12 @@ struct LinkedList<T:Any> : Printable{
 }
 
 struct HashTable<T:Any>{
-    var array:[LinkedList<T>?]?
-
+    var array:Array<LinkedList<T>?>?
+    var hash:(T) -> Int;
+    
     init(hashSize:Int, hash: (T) -> Int){
-        array = [LinkedList<T>?](count: hashSize, repeatedValue: nil)
+        array = Array<LinkedList<T>?>(count: hashSize, repeatedValue: nil)
+        self.hash = hash
     }
 }
 
