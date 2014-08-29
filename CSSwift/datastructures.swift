@@ -194,12 +194,24 @@ struct LinkedList<T:Any> : Printable{
 }
 
 struct HashTable<T:Any>{
-    var array:Array<LinkedList<T>?>?
+    var array = [LinkedList<T>]()
     var hash:(T) -> Int;
     
     init(hashSize:Int, hash: (T) -> Int){
-        array = Array<LinkedList<T>?>(count: hashSize, repeatedValue: nil)
+        // this piece of code makes me feel 
+        // like i'm smashing keys like a monkey.
+        for(var i=0; i<hashSize; i++){
+            array += [LinkedList<T>]()
+        }
         self.hash = hash
+    }
+
+    mutating func add(obj:T){
+        array[hash(obj)].add(0, object: obj)
+    }
+    
+    func contains(obj:T){
+        
     }
 }
 
