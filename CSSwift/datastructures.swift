@@ -160,6 +160,15 @@ struct LinkedList<T:Any> : Printable{
         }
     }
     
+    mutating func push(newElement: T){
+        add(0, object: newElement);
+    }
+
+    mutating func pop() -> Any{
+        var result = get(0)
+        remove(0)
+        return result
+    }
     
     var description: String{
         if let z = list{
@@ -198,8 +207,8 @@ struct HashTable<T:Any>{
     var hash:(T) -> Int;
     
     init(hashSize:Int, hash: (T) -> Int){
-        // this piece of code makes me feel 
-        // like i'm smashing keys like a monkey.
+        // this piece of code makes me feel
+        // http://littlefun.org/uploads/520be02ac856117033000007_736.jpg
         for(var i=0; i<hashSize; i++){
             array += [LinkedList<T>]()
         }
