@@ -42,7 +42,7 @@ func binarySearch<T: Comparable> (array:[T], object:T) -> Bool{
 }
 
 
-func loadTable<T: Comparable>(size:Int, C:[T], hash: (T)->Int) -> T{
+func loadTable<T: Comparable>(size:Int, C:[T], hash: (T)->Int) -> [LinkedList<T>]{
     var array = [LinkedList<T>]()
     
     
@@ -53,6 +53,19 @@ func loadTable<T: Comparable>(size:Int, C:[T], hash: (T)->Int) -> T{
     for(var i = 0; i<C.count-1; i++){
         var h = hash(C[i])
 
+        array[h].add(array[h].count, object: C[i])
+    }
+    
+    return array
+}
 
+func hashBasedSearch<T: Comparable>(A:[LinkedList<T>], t:T, hash: (T)->Int)->Bool{
+    var h = hash(t)
+    var list = A[h]
+
+    if (list.count == 0){
+        return false;
+    }else if(list.find(){
+        
     }
 }

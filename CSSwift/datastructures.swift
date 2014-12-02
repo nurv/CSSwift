@@ -15,12 +15,12 @@ import Foundation
 // SwiftC has a problem that goes SegFault on Recursive data structures.
 // I'm gonna use a lisp approach to implment a LinkedList
 
-class Cons{
-    var car:Any? = nil;
+class Cons<T:Any>{
+    var car:T? = nil;
     var cdr:Any? = nil;
 }
 
-class LinkedListNode<T: Any> : Cons, Printable{
+class LinkedListNode<T: Any> : Cons<T>, Printable{
     func add (index: Int, object: T){
         if index == 1 {
             var n = LinkedListNode()
@@ -126,6 +126,44 @@ class LinkedListNode<T: Any> : Cons, Printable{
     func toString() -> String{
         return "(" + getValues() + ")"
     }
+    
+    func size() -> Int{
+        if let x = cdr{
+            if let rest = cdr as? LinkedListNode{
+                return rest.size() + 1
+            }else{
+                assert(false, "LinkedList rest is foreign")
+            }
+        }else{
+            return 1
+        }
+    }
+    
+    func find(object: T, cmp:(T,T) -> Bool) -> Bool{
+        if let obj = car{
+            if (cmp(obj, object)){
+                return true
+            }
+            
+            if let rest = cdr{
+                if let rest = cdr as? LinkedListNode{
+                    return rest.find(object , cmp)
+                }else{
+                    assert(false, "LinkedList rest is foreign")
+                }
+            }else{
+                return false;
+            }
+        }else if let rest = cdr{
+            if let rest = cdr as? LinkedListNode{
+                return rest.find(object , cmp)
+            }else{
+                assert(false, "LinkedList rest is foreign")
+            }
+        }else{
+            return false;
+        }
+    }
 }
 
 struct LinkedList<T:Any> : Printable{
@@ -178,6 +216,14 @@ struct LinkedList<T:Any> : Printable{
             }
     }
     
+    var count: Int{
+        if let x = list{
+            return x.size()
+        }else{
+            return 0
+        }
+    }
+    
     func toString() -> String{
         if let z = list{
             return z.description
@@ -198,6 +244,14 @@ struct LinkedList<T:Any> : Printable{
     func set(index: Int, object: T){
         if let l = self.list{
             l.set(index, object:object)
+        }
+    }
+    
+    func find(object: T, cmp:(T,T) -> Bool) -> Bool{
+        if let l = self.list{
+            return l.find(object, cmp: cmp)
+        }else{
+            return false
         }
     }
 }
