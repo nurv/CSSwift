@@ -41,31 +41,33 @@ func binarySearch<T: Comparable> (array:[T], object:T) -> Bool{
     return false
 }
 
-
-func loadTable<T: Comparable>(size:Int, C:[T], hash: (T)->Int) -> [LinkedList<T>]{
-    var array = [LinkedList<T>]()
-    
-    
-    for(var i=0; i<size; i++){
-        array += [LinkedList<T>]()
-    }
+// Hash-based Search
+// Best: O(1), Avg: O(1), Worst: O(n)
+func loadTable<T: Comparable>(size:Int, C:[T], hash: (T)->Int) -> Array<LinkedList<T>?>{
+    var array = Array<LinkedList<T>?>(count: size, repeatedValue: nil)
     
     for(var i = 0; i<C.count-1; i++){
         var h = hash(C[i])
-
-        array[h].add(array[h].count, object: C[i])
+        
+        if array[h] == nil{
+            array[h] = LinkedList<T>()
+        }
+        
+        array[h]!.add(array[h]!.length, object: C[i]);
     }
     
     return array
 }
 
-func hashBasedSearch<T: Comparable>(A:[LinkedList<T>], t:T, hash: (T)->Int)->Bool{
-    var h = hash(t)
-    var list = A[h]
 
-    if (list.count == 0){
-        return false;
-    }else if(list.find(){
-        
+func hashSearch<T: Comparable>(C:[T], hash: (T)->Int, object:T) -> Bool{
+    var array = loadTable(C.count, C, hash)
+    var h = hash(object)
+    
+    if let list = array[h]{
+        return list.find(object)
+    }else{
+        return false
     }
 }
+

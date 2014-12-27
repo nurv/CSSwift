@@ -39,14 +39,11 @@ import Foundation
 //quickSort(&test)
 //println(binarySearch(test, 2))
 
+//var test = [1,4,8,9,11,15,17]
+//
+//println(hashSearch(test, { $0 % 3 }, 11))
+//println(hashSearch(test, { $0 % 3 }, 12))
 
-var l = LinkedList<Int>()
-println(l)
-l.add(0,object: 1)
-println(l)
-l.add(0,object: 2)
-println(l)
-l.add(2,object: 3)
-println(l)
-l.remove(1)
-println(l)
+var test = BinarySearchTree<Int>()
+
+

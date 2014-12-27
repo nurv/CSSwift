@@ -164,10 +164,25 @@ class LinkedListNode<T: Any> : Cons<T>, Printable{
             return false;
         }
     }
+
+    func next() -> Any?{
+        return cdr
+    }
+    
 }
 
 struct LinkedList<T:Any> : Printable{
     var list:LinkedListNode<T>? = nil
+    
+    init(){
+        
+    }
+    
+    init(array: [T]){
+        for o in array{
+            self.push(o)
+        }
+    }
     
     mutating func add(index: Int, object: T){
         if index == 0{
@@ -201,7 +216,7 @@ struct LinkedList<T:Any> : Printable{
     mutating func push(newElement: T){
         add(0, object: newElement);
     }
-
+    
     mutating func pop() -> Any{
         var result = get(0)
         remove(0)
@@ -213,7 +228,7 @@ struct LinkedList<T:Any> : Printable{
             return z.description
         }else{
             return "()"
-            }
+        }
     }
     
     var count: Int{
@@ -247,11 +262,43 @@ struct LinkedList<T:Any> : Printable{
         }
     }
     
-    func find(object: T, cmp:(T,T) -> Bool) -> Bool{
-        if let l = self.list{
-            return l.find(object, cmp: cmp)
+    func find<K: Equatable>(object: K) -> Bool{
+        if let l = list{
+            var it = l
+            for ; ;{
+                if let r = it.car as? K{
+                    if r == object{
+                        return true;
+                    }
+                    if let z = it.cdr{
+                        it = it.next() as LinkedListNode
+                    }else{
+                        break;
+                    }
+                }
+            }
+            return false;
         }else{
-            return false
+            return false;
+        }
+    }
+    
+    var length : Int{
+        get {
+            if let l = list{
+                var result = 1
+                var it = l
+                for ; ;{
+                    if let z = it.cdr{
+                        result += 1
+                        it = it.next() as LinkedListNode
+                    }else{
+                        return result;
+                    }
+                }
+            }else{
+                return 0;
+            }
         }
     }
 }
@@ -268,7 +315,7 @@ struct HashTable<T:Any>{
         }
         self.hash = hash
     }
-
+    
     mutating func add(obj:T){
         array[hash(obj)].add(0, object: obj)
     }
@@ -342,5 +389,60 @@ class BinaryHeap<T: Comparable> : Printable{
         return "Heap:\(heap)"
     }
 }
+
+struct BinarySearchTree<T: Comparable> {
+    var data : T? = nil;
+    var left : Any? = nil;
+    var right : Any? = nil;
+    
+    
+    func find(object:T) -> BinarySearchTree<T>?{
+        var currenNode : BinarySearchTree<T>? = self
+        while currenNode != nil{
+            if let node = currenNode{
+                if node.data == object{
+                    return node
+                }else if(object < node.data){
+                    currenNode = node.left as? BinarySearchTree
+                }else{
+                    currenNode = node.right as? BinarySearchTree
+                }
+            }
+        }
+        return nil
+    }
+    
+    mutating func insert(object: T){
+        var currentNode : BinarySearchTree<T>? = self
+        while currentNode != nil{
+            if var node = currentNode{
+                if node.data == object{
+                    return
+                }
+                if(object < node.data){
+                    if node.left == nil{
+                        var t = BinarySearchTree<T>();
+                        t.data = object
+                        node.left = t
+                        return
+                    }else{
+                        currentNode = node.left as? BinarySearchTree
+                    }
+                }else{
+                    if node.right == nil{
+                        var t = BinarySearchTree<T>();
+                        t.data = object
+                        node.right = t
+                        return
+                    }else{
+                        currentNode = node.right as? BinarySearchTree
+                    }
+                }
+            }
+        }
+    }
+}
+
+
 
 
