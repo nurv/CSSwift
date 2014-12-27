@@ -390,6 +390,102 @@ class BinaryHeap<T: Comparable> : Printable{
     }
 }
 
+struct StackNode<T :Any>{
+    var data: T? = nil
+    var previous: Any? = nil
+}
+
+struct Stack<T: Any>{
+    var stack : StackNode<T>? = nil
+    var empty: Bool{
+        get {
+            return stack == nil;
+        }
+    }
+    
+    mutating func push(object: T){
+        var stack = StackNode<T>()
+        
+        stack.data = object
+        stack.previous = self.stack
+        self.stack = stack
+    }
+    
+    mutating func pop() -> T?{
+        if var node = stack{
+            var data = node.data
+            stack = node.previous as? StackNode
+            
+            return data
+        }else{
+            return nil
+        }
+    }
+    
+    func peek() -> T?{
+        if var node = stack{
+            return node.data
+        }else{
+            return nil
+        }
+    }
+}
+
+class QueueNode<T: Any>{
+    var data: T? = nil
+    var previous: AnyObject? = nil
+}
+
+struct Queue<T: Any> {
+    var first: QueueNode<T>? = nil
+    var last: QueueNode<T>? = nil
+    
+    var empty:Bool{
+        get{
+            return first == nil && last == nil;
+        }
+    }
+    
+    mutating func enqueue(object:T){
+        if(empty){
+            first = QueueNode<T>()
+            last = first
+            first?.data = object
+        }else{
+            var newNode = QueueNode<T>()
+            newNode.data = object
+            first?.previous = newNode
+            first = newNode
+        }
+    }
+    
+    mutating func dequeue() -> T?{
+        if (!empty){
+            var result = last?.data
+
+            
+            if first! === last!{
+                first = nil
+                last = nil
+            }else{
+                last = last?.previous as? QueueNode<T>
+            }
+            
+            return result
+        }else{
+            return nil
+        }
+    }
+    
+    func peek() -> T?{
+        if (empty){
+            return nil
+        }else{
+            return last?.data
+        }
+    }
+}
+
 struct BinarySearchTree<T: Comparable> {
     var data : T? = nil;
     var left : Any? = nil;
